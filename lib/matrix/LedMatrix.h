@@ -1,6 +1,7 @@
 # pragma once
 
 #include <FastLED.h>
+#include <MatrixComponents.h>
 
 template<int WIGTH, int HEIGHT, int LED_PORT>
 class LedMatrix {
@@ -8,7 +9,9 @@ class LedMatrix {
        int wigth = WIGTH;
        int height = HEIGHT;
        CRGB data[WIGTH*HEIGHT];
-       bool zigzag; 
+       bool zigzag = true;
+       MatrixComponent components[9] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
+
     public:
         LedMatrix() {
             FastLED.addLeds<NEOPIXEL, LED_PORT>(data, WIGTH*HEIGHT);
@@ -19,7 +22,23 @@ class LedMatrix {
             FastLED.setBrightness(value);
         };
 
+        void addComponent(int index, MatrixComponent * component) {
+            components[index] = component;
+        };
+
+        void delComponent(int index) {
+            addComponent(index, NULL);
+        };
+
         void show() {
+            for(MatrixComponent c : components) {
+                if (c != NULL) {
+                    c.draw(data);
+                }
+            }
+            if (zigzag) {
+                doZigzag();
+            }
             FastLED.show();
         }
 

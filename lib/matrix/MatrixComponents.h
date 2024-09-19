@@ -37,43 +37,41 @@ WeatherState cloud = {
     CRGB::Blue
 };
 
-class Component {
+class MatrixComponent {
     protected:
         int posX;
         int posY;
-        CRGB *matrixData;
 
     public:
-        Component(int x, int y, CRGB *data) {
+        MatrixComponent(int x, int y) {
             posX = x;
             posY = y;
-            matrixData = data;
         };
-        virtual void draw(void) = 0;    
+        virtual void draw(CRGB *matrixData) = 0;    
 };
 
-class MatrixClock : public Component {
+class MatrixClock : public MatrixComponent {
     private:
         int hours;
         int minuts;
 };
 
-class MatrixWeather : public Component {
+class MatrixWeather : public MatrixComponent {
     private:
         int startPos;
         WeatherState *state = &sanny;
         float temperature;
 
     public:
-        MatrixWeather(int x, int y, CRGB *data) : Component(x, y, data) {
+        MatrixWeather(int x, int y) : MatrixComponent(x, y) {
             startPos = x + (y-1) * MATRIX_SIZE;
         };
-        void draw();
+        void draw(CRGB *matrixData);
         void setState(WeatherState *state);
-        void setTemperature(float temperature);
+        void setTemperature(float temperature) {};
 };
 
-void MatrixWeather::draw() {
+void MatrixWeather::draw(CRGB *matrixData) {
     int i = startPos;
     byte *pic = state->pic;
 
