@@ -13,7 +13,7 @@
 const int LINE_SIZE = MATRIX_SIZE*MATRIX_SIZE;
 //CRGB matrixData[LINE_SIZE];
 
-LedMatrix<MATRIX_SIZE, MATRIX_SIZE> matrix;
+LedMatrix<MATRIX_SIZE, MATRIX_SIZE, LED_PORT> matrix;
 
 //MatrixWeather matrixWeatherSanny(8, 8, matrixData);
 //MatrixWeather matrixWeatherCloud(0, 8, matrixData);
@@ -42,7 +42,7 @@ void rainbow() {
   {
     fill_rainbow(matrix.getData(), LINE_SIZE, i, MATRIX_SIZE-1);
       doZigzag();
-      FastLED.show();
+      matrix.show();
       delay(1000/50);
   }
 }
@@ -50,8 +50,7 @@ void rainbow() {
 void setup() {
   Serial.begin(9600);
   Serial.println("Start testing.......");
-  FastLED.addLeds<NEOPIXEL, LED_PORT>(matrix.getData(), LINE_SIZE);
-  FastLED.setBrightness(BRIGHTNESS);
+  matrix.setBrightness(BRIGHTNESS);
 }
 
 void loop() {
