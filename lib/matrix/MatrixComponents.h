@@ -47,7 +47,7 @@ class MatrixComponent {
             posX = x;
             posY = y;
         };
-        virtual void draw(CRGB *matrixData) = 0;    
+        void draw(CRGB *matrixData) {};    
 };
 
 class MatrixClock : public MatrixComponent {

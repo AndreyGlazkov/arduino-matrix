@@ -17,11 +17,6 @@ LedMatrix<MATRIX_SIZE, MATRIX_SIZE, LED_PORT> matrix;
 MatrixWeather matrixWeatherSanny(8, 8);
 MatrixWeather matrixWeatherCloud(0, 8);
 
-bool isEven(int value) {
-    int numRow = value / MATRIX_SIZE;
-    return numRow % 2 == 0;
-}
-
 void rainbow() {
   for (int i = 0; i < 256; i++)
   {

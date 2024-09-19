@@ -10,10 +10,10 @@ class LedMatrix {
        int height = HEIGHT;
        CRGB data[WIGTH*HEIGHT];
        bool zigzag = true;
-       MatrixComponent components[9] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
+       MatrixComponent components[9];
 
     public:
-        LedMatrix() {
+        LedMatrix<WIGTH, HEIGHT, LED_PORT>() {
             FastLED.addLeds<NEOPIXEL, LED_PORT>(data, WIGTH*HEIGHT);
             FastLED.setBrightness(30);
         };
@@ -54,17 +54,22 @@ class LedMatrix {
             data[index] = value;
         };
 
+        bool isEven(int value) {
+            int numRow = value / MATRIX_SIZE;
+            return numRow % 2 == 0;
+        }
+
         void doZigzag() {
-            CRGB serp[LINE_SIZE];
-            for (int i = 0; i < LINE_SIZE; i++) {
+            CRGB serp[WIGTH*HEIGHT];
+            for (int i = 0; i < WIGTH*HEIGHT; i++) {
                 if (!isEven(i)) {
-                serp[i] = matrix.getData(i);
+                serp[i] = getData(i);
                 } else {
-                serp[i+MATRIX_SIZE-1-(i%MATRIX_SIZE)*2] = matrix.getData(i);
+                serp[i+MATRIX_SIZE-1-(i%MATRIX_SIZE)*2] = getData(i);
                 }
             }
-            for (int i = 0; i < LINE_SIZE; i++) {
-                matrix.setData(i, serp[i]);
+            for (int i = 0; i < WIGTH*HEIGHT; i++) {
+                setData(i, serp[i]);
             }
         }     
 };
