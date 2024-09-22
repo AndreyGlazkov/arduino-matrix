@@ -1,7 +1,4 @@
-#include <Arduino.h>
-#include <FastLED.h>
-
-#define MATRIX_SIZE 16
+#include <MatrixComponent.h>
 
 struct WeatherState
 {
@@ -37,25 +34,6 @@ WeatherState cloud = {
     CRGB::Blue
 };
 
-class MatrixComponent {
-    protected:
-        int posX;
-        int posY;
-
-    public:
-        MatrixComponent(int x, int y) {
-            posX = x;
-            posY = y;
-        };
-        void draw(CRGB *matrixData) {};    
-};
-
-class MatrixClock : public MatrixComponent {
-    private:
-        int hours;
-        int minuts;
-};
-
 class MatrixWeather : public MatrixComponent {
     private:
         int startPos;
@@ -63,6 +41,9 @@ class MatrixWeather : public MatrixComponent {
         float temperature;
 
     public:
+        MatrixWeather() : MatrixComponent() {
+            startPos = 0;
+        };
         MatrixWeather(int x, int y) : MatrixComponent(x, y) {
             startPos = x + (y-1) * MATRIX_SIZE;
         };
@@ -90,4 +71,4 @@ void MatrixWeather::draw(CRGB *matrixData) {
 
 void MatrixWeather::setState(WeatherState *state) {
     this->state = state;
-}
+};

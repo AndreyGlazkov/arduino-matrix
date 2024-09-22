@@ -19,7 +19,6 @@
     }
   ],
   "connections": [
-    [ "$serialMonitor:RX", "pico:GP0", "", [] ],
     [ "pico:GND.7", "neopixels:VSS", "black", [ "v0", "*", "v16" ] ],
     [ "pico:GP18", "neopixels:DIN", "green", [ "v-16", "*", "v8" ] ],
     [ "pico:VSYS", "neopixels:VDD", "red", [ "v20", "h226", "*", "v24" ] ]
