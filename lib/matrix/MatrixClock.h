@@ -1,81 +1,14 @@
 # pragma once
 
 #include <MatrixComponent.h>
-
-struct DigitalData
-{
-    byte pic[3];
-};
-
-const DigitalData digitals[10] = {
-    //0
-    {        
-        0b01110101,
-        0b01010101,
-        0b01010111
-    },
-    //1
-    {        
-        0b00100110,
-        0b00100010,
-        0b00100111
-    },
-    //2
-    {        
-        0b01110101,
-        0b00010010,
-        0b01000111
-    },
-    //3
-    {        
-        0b01110101,
-        0b00010010,
-        0b00010111
-    },
-    //4
-    {        
-        0b01000101,
-        0b01010111,
-        0b00010001
-    },
-    //5
-    {        
-        0b01110100,
-        0b01110001,
-        0b01010111
-    },
-    //6
-    {        
-        0b01110100,
-        0b01110101,
-        0b01010111
-    },
-    //7
-    {        
-        0b01110001,
-        0b00100100,
-        0b01000100
-    },
-    //8
-    {        
-        0b01110101,
-        0b01110101,
-        0b01010111
-    },
-    //9
-    {        
-        0b01110101,
-        0b01010111,
-        0b00010111
-    }
-};
+#include <PixelDigit.h>
 
 class MatrixClock : public MatrixComponent {
     private:
+        PixelDigit _digitPrint;
         int startPos;
         int _hours;
         int _minuts;
-        void drawDigital(int x, int y, int digital, CRGB *matrixData, CRGB color);
 
     public:
         MatrixClock() : MatrixComponent() {
@@ -91,44 +24,13 @@ class MatrixClock : public MatrixComponent {
         };
 };
 
-void MatrixClock::drawDigital(int x, int y, int digital, CRGB *matrixData, CRGB color) {
-    DigitalData data = digitals[digital];
-    // for (int b = 0; b < 6; b++) {
-    //     for (int r = 0; r < 4; r++) {
-    //         // y*16+x - Розташування числа на матриці
-    //         // b*16+r - Поточний піксель числа, який заповнюється на матриці
-    //         // (int)(r*b/8) - Ділення з округленням вниз. Потрібно для визначення потрібного байту, який ми вичитуємо
-    //         // r*b%8 - Ділення з остатком. Потрібно для визначення поточного біту, який ми вичитуємо
-    //         if (bitRead(data.pic[b/2], r+4*b%2) == 1) {
-    //             matrixData[y*16+x+b*16+r] = CRGB::White;
-    //         } else {
-    //             matrixData[y*16+x+b*16+r] = CRGB::Black;
-    //         }
-    //     }
-    // }
-
-    for (int b=0; b<3; b++) {
-        byte bd = data.pic[b];
-        for (int n=0; n<8; n++) {
-            byte r = bitRead(bd, 7-n);
-            int nr = n/4+1;
-            int p = x + (b*2+nr)*MATRIX_SIZE + n%4;
-            if (r == 1) {
-                matrixData[p] = color;
-            } else {
-                matrixData[p] = CRGB::Black;
-            }
-        }
-    }
-}
-
 void MatrixClock::draw(CRGB *matrixData) {
     int hh = _hours/10;
     int lh = _hours%10;
     int hm = _minuts/10;
     int lm = _minuts%10;
-    drawDigital(startPos + 4*0, posY, hh, matrixData, CRGB::SkyBlue);
-    drawDigital(startPos + 4*1, posY, lh, matrixData, CRGB::SkyBlue);
-    drawDigital(startPos + 4*2, posY, hm, matrixData, CRGB::YellowGreen);
-    drawDigital(startPos + 4*3, posY, lm, matrixData, CRGB::YellowGreen);
+    _digitPrint.draw(startPos + 4*0, posY, hh, matrixData, CRGB::SkyBlue);
+    _digitPrint.draw(startPos + 4*1, posY, lh, matrixData, CRGB::SkyBlue);
+    _digitPrint.draw(startPos + 4*2, posY, hm, matrixData, CRGB::YellowGreen);
+    _digitPrint.draw(startPos + 4*3, posY, lm, matrixData, CRGB::YellowGreen);
 };

@@ -5,6 +5,7 @@
 #include <LedMatrix.h>
 #include <MatrixWeather.h>
 #include <MatrixClock.h>
+#include <MatrixTemperature.h>
 #include <WiFi.h>
 #include <WiFiUdp.h>
 #include <NTPClient.h>
@@ -26,8 +27,8 @@ NTPClient ntpClient(udp, 3*3600);
 
 unsigned long lastUpdateTime = 0;
 
-MatrixWeather matrixWeatherSanny(8, 8);
-MatrixClock matrixClock(0, 5);
+MatrixClock matrixClock(0, 0);
+MatrixTemperature matrixTemterature(3, 8);
 
 void rainbow() {
   for (int i = 0; i < 256; i++)
@@ -64,16 +65,17 @@ void setup() {
   waitConnect();
 
   matrixClock.setTime(00, 00);
+  matrixTemterature.setTemperature(21.5f);
 
   matrix.setBrightness(BRIGHTNESS);
 
   MatrixEnabledComponent c1;
-  c1.enable = false;
-  c1.component = &matrixWeatherSanny;
+  c1.enable = true;
+  c1.component = &matrixClock;
 
   MatrixEnabledComponent c2;
   c2.enable = true;
-  c2.component = &matrixClock;
+  c2.component = &matrixTemterature;
 
   matrix.addComponent(0, &c1);
   matrix.addComponent(1, &c2);
