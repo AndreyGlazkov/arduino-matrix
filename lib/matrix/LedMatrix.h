@@ -30,6 +30,11 @@ class LedMatrix {
             addComponent(index, NULL);
         };
 
+        void clean() {
+            for (int i=0; i<wigth*height; i++)
+                data[i] = CRGB::Black;
+        };
+
         void show() {
             for (int i = 0; i < 2; i++) {
                 if (components[i].enable) {

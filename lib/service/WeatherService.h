@@ -12,7 +12,7 @@ class WeatherService {
         HTTPClient _httpClient;
         float temperature;
         int weatherCode;
-        long timeLastUpdate = 0;
+        long timeLastUpdate = -999999999;
         void doRequestToServer();
 
     public:
@@ -28,15 +28,17 @@ WeatherService::WeatherService(char* apiKey) {
 };
 
 void WeatherService::doRequestToServer() {
-    StaticJsonDocument<200> doc;
     String path = _url + "?key="+_apiKey+"&q="+_city;
+    StaticJsonDocument<500> doc;
     _httpClient.begin(path);
     int httpResponseCode = _httpClient.GET();
     if (httpResponseCode>0) {
         String payload = _httpClient.getString();
+        Serial.println(payload);
         deserializeJson(doc, payload);
         temperature = doc["current"]["temp_c"].as<float>();
         weatherCode = doc["current"]["condition"]["code"].as<int>();
+        Serial.println(doc["current"]["temp_c"].as<float>());
     }
 };
 

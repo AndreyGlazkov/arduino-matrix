@@ -11,7 +11,7 @@ struct DigitalData
     byte pic[3];
 };
 
-const DigitalData digitals[13] = {
+const DigitalData digitals[] {
     //0
     {        
         0b01110101,
@@ -74,14 +74,14 @@ const DigitalData digitals[13] = {
     },
     //+
     {        
-        0b00000010,
-        0b01110010,
-        0b00000000
+        0b00000000,
+        0b00100111,
+        0b00100000
     },
     //-
     {        
         0b00000000,
-        0b01110000,
+        0b00000111,
         0b00000000
     },
     //.
@@ -89,6 +89,12 @@ const DigitalData digitals[13] = {
         0b00000000,
         0b00000000,
         0b00001000
+    },
+    //c
+    {        
+        0b01100100,
+        0b01100000,
+        0b00000000
     }
 };
 
@@ -128,6 +134,9 @@ void PixelDigit::drawSymbol(int x, int y, char symbol, CRGB* matrix, CRGB color)
             break;
         case '.':
             digital = 12;
+            break;        
+        case 'c':
+            digital = 13;
             break;
         
         default:
