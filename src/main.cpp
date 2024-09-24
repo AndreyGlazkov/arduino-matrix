@@ -27,8 +27,8 @@ NTPClient ntpClient(udp, 3*3600);
 
 unsigned long lastUpdateTime = 0;
 
-MatrixClock matrixClock(0, 0);
-MatrixTemperature matrixTemterature(3, 8);
+MatrixClock matrixClock(0, 1);
+MatrixTemperature matrixTemterature(2, 9);
 
 void rainbow() {
   for (int i = 0; i < 256; i++)
@@ -44,7 +44,7 @@ void waitConnect() {
   WiFi.begin(WIFI_NAME, WIFI_PASS);
   int p = 0;
   while (WiFi.status() != WL_CONNECTED) {
-    *matrixData + p++ = CRGB::Orange;
+    *(matrixData + p++) = CRGB::Orange;
     matrix.show();
     delay(100);
   }
@@ -80,10 +80,11 @@ void setup() {
 
   matrix.addComponent(0, &c1);
   matrix.addComponent(1, &c2);
+  
   matrix.show();
 }
 
 void loop() {
-  //rainbow();
+  rainbow();
   updateTime();
 }

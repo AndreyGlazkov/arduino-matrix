@@ -11,7 +11,7 @@ struct DigitalData
     byte pic[3];
 };
 
-const DigitalData digitals[10] = {
+const DigitalData digitals[13] = {
     //0
     {        
         0b01110101,

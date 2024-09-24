@@ -7,20 +7,29 @@
 class MatrixTemperature : public MatrixComponent {
     private:
         PixelDigit _digitPrint;
-        CRGB palette[10] = {
+        CRGB palette[19] = {
+            CRGB::DarkBlue,
+            CRGB::DarkBlue,
+            CRGB::DarkBlue,
+            CRGB::Blue,
+            CRGB::Blue,
+            CRGB::Blue,
             CRGB::Red,
-            CRGB::Orange,
+            CRGB::Red,
+            CRGB::Red,
+            CRGB::YellowGreen,
             CRGB::YellowGreen,
             CRGB::Yellow,
+            CRGB::Yellow,
+            CRGB::Green,
             CRGB::Green,
             CRGB::DarkSeaGreen,
-            CRGB::Blue,
-            CRGB::DarkBlue,
             CRGB::Coral,
+            CRGB::Orange,
             CRGB::Chocolate
         };
         int _startPos;
-        float _temperature;
+        int _temperature;
 
     public:
         MatrixTemperature();
@@ -43,13 +52,10 @@ void MatrixTemperature::setTemperature(float temerature) {
 
 void MatrixTemperature::draw(CRGB *matrixData) {
     char lev = _temperature < 0 ? '-' : '+';
-    int t1 = (int)_temperature/10;    
-    int t2 = (int)_temperature%10;
-    int t3 = (int)_temperature*10%10;
-    CRGB color = palette[t1];
+    int t1 = _temperature/10;    
+    int t2 = _temperature%10;
+    CRGB color = palette[_temperature/2];
     _digitPrint.drawSymbol(_startPos + 4*0, posY, lev, matrixData, color);
     _digitPrint.draw(_startPos + 4*1, posY, t1, matrixData, color);
     _digitPrint.draw(_startPos + 4*2, posY, t2, matrixData, color);
-    _digitPrint.drawSymbol(_startPos + 4*3, posY, lev, matrixData, CRGB::Green);
-    _digitPrint.draw(_startPos + 4*3+1, posY, t3, matrixData, color);
 };
