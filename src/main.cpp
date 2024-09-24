@@ -9,6 +9,7 @@
 #include <WiFi.h>
 #include <WiFiUdp.h>
 #include <NTPClient.h>
+#include <WeatherService.h>
 
 #define LED_PORT 18
 #define BRIGHTNESS 40
@@ -17,6 +18,7 @@
 #define WIFI_NAME "Xiaomi_1310"
 #define WIFI_PASS "Nikita_2009"
 #define WEATHER_API_KEY "b6d1ba500e374f5c82254122242409"
+#define WEATHER_CITY "Kyiv"
 
 const int LINE_SIZE = MATRIX_SIZE*MATRIX_SIZE;
 
@@ -24,11 +26,11 @@ LedMatrix<MATRIX_SIZE, MATRIX_SIZE, LED_PORT> matrix;
 
 WiFiUDP udp;
 NTPClient ntpClient(udp, 3*3600);
-
-unsigned long lastUpdateTime = 0;
-
+WeatherService weatherService(WEATHER_API_KEY);
 MatrixClock matrixClock(0, 1);
 MatrixTemperature matrixTemterature(2, 9);
+
+unsigned long lastUpdateTime = 0;
 
 void rainbow() {
   for (int i = 0; i < 256; i++)
@@ -37,7 +39,7 @@ void rainbow() {
       matrix.show();
       delay(1000/50);
   }
-}
+};
 
 void waitConnect() {
   CRGB * matrixData = matrix.getData();
@@ -49,7 +51,7 @@ void waitConnect() {
     delay(100);
   }
   ntpClient.begin();
-}
+};
 
 void updateTime() {
   if (millis() - lastUpdateTime > 1000) {
@@ -57,16 +59,23 @@ void updateTime() {
     matrixClock.setTime(ntpClient.getHours(), ntpClient.getMinutes());
     lastUpdateTime = millis();
   }
-}
+};
+
+void updateWeather() {
+  matrixTemterature.setTemperature(weatherService.getTemperature());
+};
+
 
 void setup() {
   Serial.begin(9600);
+
+  weatherService.setCity(WEATHER_CITY);
+
   matrix.setBrightness(BRIGHTNESS);
 
   waitConnect();
 
   matrixClock.setTime(00, 00);
-  matrixTemterature.setTemperature(21.5f);
 
   matrix.setBrightness(BRIGHTNESS);
 
@@ -87,4 +96,6 @@ void setup() {
 void loop() {
   rainbow();
   updateTime();
+  updateWeather();
+  delay(100);
 }
