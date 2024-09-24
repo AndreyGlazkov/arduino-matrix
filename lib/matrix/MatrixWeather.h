@@ -1,3 +1,5 @@
+# pragma once
+
 #include <MatrixComponent.h>
 
 struct WeatherState

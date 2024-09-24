@@ -37,6 +37,36 @@ const DigitalData digitals[10] = {
         0b01000101,
         0b01010111,
         0b00010001
+    },
+    //5
+    {        
+        0b01110100,
+        0b01110001,
+        0b01010111
+    },
+    //6
+    {        
+        0b01110100,
+        0b01110101,
+        0b01010111
+    },
+    //7
+    {        
+        0b01110001,
+        0b00100100,
+        0b01000100
+    },
+    //8
+    {        
+        0b01110101,
+        0b01110101,
+        0b01010111
+    },
+    //9
+    {        
+        0b01110101,
+        0b01010111,
+        0b00010111
     }
 };
 
@@ -76,7 +106,7 @@ void MatrixClock::drawDigital(int x, int y, int digital, CRGB *matrixData, CRGB 
     //         }
     //     }
     // }
-    
+
     for (int b=0; b<3; b++) {
         byte bd = data.pic[b];
         for (int n=0; n<8; n++) {
@@ -93,8 +123,12 @@ void MatrixClock::drawDigital(int x, int y, int digital, CRGB *matrixData, CRGB 
 }
 
 void MatrixClock::draw(CRGB *matrixData) {
-    for (int d = 0; d < 4; d++) {
-        CRGB color = d < 2 ? CRGB::Blue : CRGB::Yellow;
-        drawDigital(startPos + 4*d, posY, d, matrixData, color);
-    }
+    int hh = _hours/10;
+    int lh = _hours%10;
+    int hm = _minuts/10;
+    int lm = _minuts%10;
+    drawDigital(startPos + 4*0, posY, hh, matrixData, CRGB::SkyBlue);
+    drawDigital(startPos + 4*1, posY, lh, matrixData, CRGB::SkyBlue);
+    drawDigital(startPos + 4*2, posY, hm, matrixData, CRGB::YellowGreen);
+    drawDigital(startPos + 4*3, posY, lm, matrixData, CRGB::YellowGreen);
 };
