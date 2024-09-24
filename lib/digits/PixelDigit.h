@@ -83,6 +83,12 @@ const DigitalData digitals[10] = {
         0b00000000,
         0b01110000,
         0b00000000
+    },
+    //.
+    {        
+        0b00000000,
+        0b00000000,
+        0b00001000
     }
 };
 
@@ -114,15 +120,18 @@ void PixelDigit::drawSymbol(int x, int y, char symbol, CRGB* matrix, CRGB color)
     int digital = 10;
     switch (symbol)
     {
-    case '+':
-        digital = 10;
-        break;
-    case '-':
-        digital = 11;
-        break;
-    
-    default:
-        break;
+        case '+':
+            digital = 10;
+            break;
+        case '-':
+            digital = 11;
+            break;
+        case '.':
+            digital = 12;
+            break;
+        
+        default:
+            break;
     }
     draw(x, y, digital, matrix, color);
 };

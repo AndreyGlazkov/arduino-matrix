@@ -45,7 +45,8 @@ void waitConnect() {
   int p = 0;
   while (WiFi.status() != WL_CONNECTED) {
     *matrixData + p++ = CRGB::Orange;
-    delay(200);
+    matrix.show();
+    delay(100);
   }
   ntpClient.begin();
 }
