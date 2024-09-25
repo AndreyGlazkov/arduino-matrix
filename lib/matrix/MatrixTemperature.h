@@ -4,31 +4,22 @@
 #include <Arduino.h>
 #include <PixelDigit.h>
 
+DEFINE_GRADIENT_PALETTE(temper_gp) {
+    0, 0, 0, 255,
+    128, 0, 255, 0,
+    255, 255, 0, 0
+};
+
 class MatrixTemperature : public MatrixComponent {
     private:
         PixelDigit _digitPrint;
-        CRGB palette[14] = {
-            CRGB::Purple,
-            CRGB::Blue,
-            CRGB::SkyBlue,
-            CRGB::LightYellow,
-            CRGB::Yellow,
-            CRGB::GreenYellow,
-            CRGB::Green,
-            CRGB::DarkGreen,
-            CRGB::DarkSeaGreen,
-            CRGB::Coral,
-            CRGB::Orange,
-            CRGB::MediumVioletRed,
-            CRGB::Red,
-            CRGB::DarkRed
-        };
-        int _startPos;
-        int _temperature;
+        CRGBPalette16 palette = temper_gp;
+        uint8_t _startPos;
+        int8_t _temperature;
 
     public:
         MatrixTemperature();
-        MatrixTemperature(int x, int y);
+        MatrixTemperature(uint8_t x, uint8_t y);
         void setTemperature(float temperature);
         void draw(CRGB *matrixData);    
 };
@@ -37,7 +28,7 @@ MatrixTemperature::MatrixTemperature() : MatrixComponent() {
     _startPos = 0;
 };
 
-MatrixTemperature::MatrixTemperature(int x, int y) : MatrixComponent(x, y) {
+MatrixTemperature::MatrixTemperature(uint8_t x, uint8_t y) : MatrixComponent(x, y) {
     _startPos = x + (y-1) * MATRIX_SIZE;
 };
 
@@ -47,9 +38,9 @@ void MatrixTemperature::setTemperature(float temerature) {
 
 void MatrixTemperature::draw(CRGB *matrixData) {
     char lev = _temperature < 0 ? '-' : '+';
-    int t1 = _temperature/10;    
-    int t2 = _temperature%10;
-    CRGB color = palette[map(_temperature, 5, 25, 0, 13)];
+    uint8_t t1 = abs8(_temperature)/10;    
+    uint8_t t2 = abs8(_temperature)%10;
+    CRGB color = ColorFromPalette(palette, map(t1, 0, 30, 0, 255));
     _digitPrint.drawSymbol(_startPos + 4*0, posY, lev, matrixData, color);
     _digitPrint.draw(_startPos + 4*1, posY, t1, matrixData, color);
     _digitPrint.draw(_startPos + 4*2, posY, t2, matrixData, color);
