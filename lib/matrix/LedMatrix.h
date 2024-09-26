@@ -4,11 +4,16 @@
 
 class LedMatrix {
     private:
-       uint8_t wigth;
-       uint8_t height;
-       int matrixSize;
-       CRGB* data;
-       bool zigzag = true;
+        uint8_t wigth;
+        uint8_t height;
+        int matrixSize;
+        CRGB* data;
+        bool zigzag = true;
+
+        bool isEven(int value) {
+            int numRow = value / matrixSize;
+            return numRow % 2 == 0;
+        };
 
     public:
         template<uint8_t WIGTH, uint8_t HEIGHT, uint8_t LED_PORT>
@@ -43,16 +48,19 @@ class LedMatrix {
         };
 
         CRGB getDataXY(uint8_t x, uint8_t y) {
-            return getData(x + y*wigth);
+            if (zigzag && y%2 == 0) {
+                return getData((wigth-1-x) + y*wigth);
+            } else {
+                return getData(x + y*wigth);
+            }
         };
 
         void setDataXY(uint8_t x, uint8_t y, CRGB value) {
-            setData(x + y*wigth, value);
-        };
-
-        bool isEven(int value) {
-            int numRow = value / matrixSize;
-            return numRow % 2 == 0;
+            if (zigzag && y%2 == 0) {
+                setData((wigth-1-x) + y*wigth, value);
+            } else {
+                setData(x + y*wigth, value);
+            }    
         };
 
         void doZigzag() {

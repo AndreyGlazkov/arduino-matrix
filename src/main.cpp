@@ -38,13 +38,7 @@ void show() {
             components[i].component->draw(&matrix);
         }
     }
-    if (true) {
-        matrix.doZigzag();
-    }
     FastLED.show();
-    if (true) {
-        matrix.doZigzag();
-    }
 };
 
 void rainbow() {
@@ -56,14 +50,27 @@ void rainbow() {
   }
 };
 
+void test() {
+  FastLED.show();
+  delay(250);
+  matrix.clean();
+  for (uint8_t k=0; k<16; k++) {
+    for (uint8_t j=0; j<16; j++) {
+      matrix.setDataXY(j, k, CRGB::Gold);
+      FastLED.show();
+      delay(50);
+    }
+  }
+  matrix.clean();
+}
+
 void waitConnect() {
-  CRGB * matrixData = matrix.getData();
   WiFi.begin(WIFI_NAME, WIFI_PASS);
-  int p = 0;
+  uint8_t p = 0;
   while (WiFi.status() != WL_CONNECTED) {
-    matrixData[p++] = CRGB::Orange;
-    show();
-    delay(100);
+    matrix.setDataXY(p++, 0, CRGB::Magenta);
+    FastLED.show();
+    delay(50);
   }
   ntpClient.begin();
 };
@@ -88,14 +95,14 @@ void setup() {
   matrix.init<MATRIX_SIZE, MATRIX_SIZE, LED_PORT>();
   matrix.setBrightness(BRIGHTNESS);
 
+  test();
+
   waitConnect();
 
   matrixClock.setTime(00, 00);
 
-  matrix.setBrightness(BRIGHTNESS);
-
   MatrixEnabledComponent c1;
-  c1.enable = true;
+  c1.enable = false;
   c1.component = &matrixClock;
 
   MatrixEnabledComponent c2;

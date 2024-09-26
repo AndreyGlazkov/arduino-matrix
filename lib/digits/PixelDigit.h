@@ -128,8 +128,8 @@ void PixelDigit::draw(int x, int y, short digital, LedMatrix* matrix, CRGB color
     for (int b=0; b<3; b++) {
         byte bd = data.pic[b];
         for (int n=0; n<8; n++) {
-            uint8_t xm = n<4 ? x+n : x+n-4;
-            uint8_t ym = n<4 ? y+b : y+b+1;
+            uint8_t xm = n>3 ? 7-n+x : 3-n+x;
+            uint8_t ym = n>3 ? y+b*2 : y+b*2+1;
             byte r = bitRead(bd, n);
             if (r == 1) {
                 matrix->setDataXY(xm, ym, color);
