@@ -102,7 +102,7 @@ void setup() {
   matrixClock.setTime(00, 00);
 
   MatrixEnabledComponent c1;
-  c1.enable = false;
+  c1.enable = true;
   c1.component = &matrixClock;
 
   MatrixEnabledComponent c2;
