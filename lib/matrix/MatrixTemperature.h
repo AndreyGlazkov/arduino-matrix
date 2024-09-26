@@ -5,8 +5,9 @@
 #include <PixelDigit.h>
 
 DEFINE_GRADIENT_PALETTE(temper_gp) {
-    0, 0, 0, 255,
-    128, 0, 255, 0,
+    0, 102, 0, 102,
+    100, 0, 0, 255,
+    180, 0, 255, 0,
     255, 255, 0, 0
 };
 
@@ -40,7 +41,7 @@ void MatrixTemperature::draw(CRGB *matrixData) {
     char lev = _temperature < 0 ? '-' : '+';
     uint8_t t1 = abs8(_temperature)/10;    
     uint8_t t2 = abs8(_temperature)%10;
-    CRGB color = ColorFromPalette(palette, map(t1, 0, 30, 0, 255));
+    CRGB color = ColorFromPalette(palette, map(_temperature, -20, 40, 0, 255));
     _digitPrint.drawSymbol(_startPos + 4*0, posY, lev, matrixData, color);
     _digitPrint.draw(_startPos + 4*1, posY, t1, matrixData, color);
     _digitPrint.draw(_startPos + 4*2, posY, t2, matrixData, color);
