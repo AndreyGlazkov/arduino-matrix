@@ -1,7 +1,7 @@
 # pragma once
 
 #include <Arduino.h>
-#include <FastLED.h>
+#include <LedMatrix.h>
 
 #define MATRIX_SIZE 16
 
@@ -19,7 +19,7 @@ class MatrixComponent {
             posX = x;
             posY = y;
         };
-        virtual void draw(CRGB *matrixData) {};    
+        virtual void draw(LedMatrix* matrix) {};    
 };
 
 struct MatrixEnabledComponent {

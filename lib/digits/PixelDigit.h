@@ -1,6 +1,6 @@
 #pragma once
 
-#include <FastLED.h>
+#include <LedMatrix.h>
 
 #ifndef MATRIX_SIZE
 #define MATRIX_SIZE 16
@@ -102,7 +102,8 @@ class PixelDigit {
     public:
         PixelDigit() {};
         void draw(int x, int y, short digital, CRGB* matrix, CRGB color);
-        void drawSymbol(int x, int y, char symbol, CRGB* matrix, CRGB color);
+        void draw(int x, int y, short digital, LedMatrix* matrix, CRGB color);
+        void drawSymbol(int x, int y, char symbol, LedMatrix* matrix, CRGB color);
 };
 
 void PixelDigit::draw(int x, int y, short digital, CRGB* matrix, CRGB color) {
@@ -122,7 +123,24 @@ void PixelDigit::draw(int x, int y, short digital, CRGB* matrix, CRGB color) {
     }
 };
 
-void PixelDigit::drawSymbol(int x, int y, char symbol, CRGB* matrix, CRGB color) {
+void PixelDigit::draw(int x, int y, short digital, LedMatrix* matrix, CRGB color) {
+    DigitalData data = digitals[digital];
+    for (int b=0; b<3; b++) {
+        byte bd = data.pic[b];
+        for (int n=0; n<8; n++) {
+            uint8_t xm = n>3 ? 7-n+x : 3-n+x;
+            uint8_t ym = n>3 ? y+b*2 : y+b*2+1;
+            byte r = bitRead(bd, n);
+            if (r == 1) {
+                matrix->setDataXY(xm, ym, color);
+            // } else {
+            //     matrix[p] = CRGB::Black;
+            }
+        }
+    }
+};
+
+void PixelDigit::drawSymbol(int x, int y, char symbol, LedMatrix* matrix, CRGB color) {
     int digital = 10;
     switch (symbol)
     {

@@ -12,7 +12,7 @@
 #include <WeatherService.h>
 
 #define LED_PORT 18
-#define BRIGHTNESS 40
+#define BRIGHTNESS 20
 #define MATRIX_SIZE 16
 
 #define WIFI_NAME "Xiaomi_1310"
@@ -20,35 +20,57 @@
 #define WEATHER_API_KEY "b6d1ba500e374f5c82254122242409"
 #define WEATHER_CITY "Kyiv"
 
-const int LINE_SIZE = MATRIX_SIZE*MATRIX_SIZE;
-
-LedMatrix<MATRIX_SIZE, MATRIX_SIZE, LED_PORT> matrix;
-
 WiFiUDP udp;
 NTPClient ntpClient(udp, 3*3600);
 WeatherService weatherService(WEATHER_API_KEY);
+
+LedMatrix matrix;
+MatrixEnabledComponent components[2];
 MatrixClock matrixClock(0, 1);
 MatrixTemperature matrixTemterature(0, 9);
 
 unsigned long lastUpdateTime = 0;
 
+void show() {
+    matrix.clean();
+    for (int i = 0; i < 2; i++) {
+        if (components[i].enable) {
+            components[i].component->draw(&matrix);
+        }
+    }
+    FastLED.show();
+};
+
 void rainbow() {
   for (int i = 0; i < 256; i++)
   {
-    fill_rainbow(matrix.getData(), LINE_SIZE, i, MATRIX_SIZE-1);
-      matrix.show();
+    fill_rainbow(matrix.getData(), MATRIX_SIZE*MATRIX_SIZE, i, MATRIX_SIZE-1);
+      show();
       delay(1000/50);
   }
 };
 
+void test() {
+  FastLED.show();
+  delay(250);
+  matrix.clean();
+  for (uint8_t k=0; k<16; k++) {
+    for (uint8_t j=0; j<16; j++) {
+      matrix.setDataXY(j, k, CRGB::Gold);
+      FastLED.show();
+      delay(50);
+    }
+  }
+  matrix.clean();
+}
+
 void waitConnect() {
-  CRGB * matrixData = matrix.getData();
   WiFi.begin(WIFI_NAME, WIFI_PASS);
-  int p = 0;
+  uint8_t p = 0;
   while (WiFi.status() != WL_CONNECTED) {
-    *(matrixData + p++) = CRGB::Orange;
-    matrix.show();
-    delay(100);
+    matrix.setDataXY(p++, 0, CRGB::Magenta);
+    FastLED.show();
+    delay(50);
   }
   ntpClient.begin();
 };
@@ -65,19 +87,19 @@ void updateWeather() {
   matrixTemterature.setTemperature(weatherService.getTemperature());
 };
 
-
 void setup() {
   Serial.begin(9600);
 
   weatherService.setCity(WEATHER_CITY);
 
+  matrix.init<MATRIX_SIZE, MATRIX_SIZE, LED_PORT>();
   matrix.setBrightness(BRIGHTNESS);
+
+  test();
 
   waitConnect();
 
   matrixClock.setTime(00, 00);
-
-  matrix.setBrightness(BRIGHTNESS);
 
   MatrixEnabledComponent c1;
   c1.enable = true;
@@ -87,8 +109,8 @@ void setup() {
   c2.enable = true;
   c2.component = &matrixTemterature;
 
-  matrix.addComponent(0, &c1);
-  matrix.addComponent(1, &c2);
+  components[0] = c1;
+  components[1] = c2;
   
   matrix.clean();
 }
@@ -97,6 +119,6 @@ void loop() {
   //rainbow();
   updateTime();
   updateWeather();
-  matrix.show();
+  show();
   delay(100);
 }
