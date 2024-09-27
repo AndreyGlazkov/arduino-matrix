@@ -12,7 +12,7 @@
 #include <WeatherService.h>
 
 #define LED_PORT 18
-#define BRIGHTNESS 40
+#define BRIGHTNESS 20
 #define MATRIX_SIZE 16
 
 #define WIFI_NAME "Xiaomi_1310"
