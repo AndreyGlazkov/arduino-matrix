@@ -35,6 +35,14 @@ class LedMatrix {
                 data[i] = CRGB::Black;
         };
 
+        uint8_t getWigth() {
+            return wigth;
+        };
+
+        uint8_t getHeight() {
+            return height;
+        };
+
         CRGB *getData() {
             return data;
         };

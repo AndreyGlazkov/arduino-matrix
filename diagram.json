@@ -4,7 +4,7 @@
   "editor": "wokwi",
   "parts": [
     {
-      "type": "wokwi-pi-pico",
+      "type": "wokwi-esp32-devkit-v1",
       "id": "pico",
       "top": -51.15,
       "left": -198,

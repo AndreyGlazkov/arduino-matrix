@@ -24,8 +24,8 @@ void MatrixClock::draw(LedMatrix *matrix) {
     int lh = _hours%10;
     int hm = _minuts/10;
     int lm = _minuts%10;
-    _digitPrint.draw(4*0, posY, hh, matrix, CRGB::SkyBlue);
-    _digitPrint.draw(4*1, posY, lh, matrix, CRGB::SkyBlue);
-    _digitPrint.draw(4*2, posY, hm, matrix, CRGB::YellowGreen);
-    _digitPrint.draw(4*3, posY, lm, matrix, CRGB::YellowGreen);
+    _digitPrint.draw(4*0, posY, hh, matrix, CRGB::Brown);
+    _digitPrint.draw(4*1, posY, lh, matrix, CRGB::Brown);
+    _digitPrint.draw(4*2, posY, hm, matrix, CRGB::BurlyWood);
+    _digitPrint.draw(4*3, posY, lm, matrix, CRGB::BurlyWood);
 };

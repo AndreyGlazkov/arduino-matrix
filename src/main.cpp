@@ -2,10 +2,13 @@
 
 #include <SPI.h>
 #include <Adafruit_SSD1306.h>
+
 #include <LedMatrix.h>
 #include <MatrixWeather.h>
 #include <MatrixClock.h>
 #include <MatrixTemperature.h>
+#include <effects/Rain.h>
+
 #include <WiFi.h>
 #include <WiFiUdp.h>
 #include <NTPClient.h>
@@ -25,15 +28,16 @@ NTPClient ntpClient(udp, 3*3600);
 WeatherService weatherService(WEATHER_API_KEY);
 
 LedMatrix matrix;
-MatrixEnabledComponent components[2];
+MatrixEnabledComponent components[3];
 MatrixClock matrixClock(0, 1);
 MatrixTemperature matrixTemterature(0, 9);
+RainEffect rainEffect;
 
 unsigned long lastUpdateTime = 0;
 
 void show() {
     matrix.clean();
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 3; i++) {
         if (components[i].enable) {
             components[i].component->draw(&matrix);
         }
@@ -56,9 +60,10 @@ void test() {
   matrix.clean();
   for (uint8_t k=0; k<16; k++) {
     for (uint8_t j=0; j<16; j++) {
-      matrix.setDataXY(j, k, CRGB::Gold);
+      CRGB color = CHSV(k*j, 255, 255);
+      matrix.setDataXY(j, k, color);
       FastLED.show();
-      delay(50);
+      delay(10);
     }
   }
   matrix.clean();
@@ -109,8 +114,13 @@ void setup() {
   c2.enable = true;
   c2.component = &matrixTemterature;
 
-  components[0] = c1;
-  components[1] = c2;
+  MatrixEnabledComponent rain_mec;
+  rain_mec.enable = true;
+  rain_mec.component = &rainEffect;
+
+  components[0] = rain_mec;
+  components[1] = c1;
+  components[2] = c2;
   
   matrix.clean();
 }
