@@ -9,6 +9,7 @@
 #include <MatrixTemperature.h>
 #include <effects/Rain.h>
 #include <effects/Sky.h>
+#include <effects/MultiColor.h>
 
 #include <WiFi.h>
 #include <WiFiUdp.h>
@@ -35,6 +36,7 @@ MatrixTemperature matrixTemterature(0, 9);
 
 RainEffect rainEffect;
 SkyEffect skyEffect;
+MultiColorEffect multiColorEffect;
 
 unsigned long lastUpdateTime = 0;
 
@@ -119,7 +121,7 @@ void setup() {
 
   MatrixEnabledComponent rain_mec;
   rain_mec.enable = true;
-  rain_mec.component = &skyEffect; //rainEffect;
+  rain_mec.component = &multiColorEffect; //skyEffect; //rainEffect;
 
   components[0] = rain_mec;
   components[1] = c1;

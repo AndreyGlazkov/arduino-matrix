@@ -31,9 +31,12 @@ class LedMatrix {
         };
 
         void clean() {
-            for (int i=0; i<matrixSize; i++)
-                data[i] = CRGB::Black;
+            FastLED.clearData();
         };
+
+        void fillColor(CRGB color) {
+            FastLED.showColor(color);
+        }
 
         uint8_t getWigth() {
             return wigth;

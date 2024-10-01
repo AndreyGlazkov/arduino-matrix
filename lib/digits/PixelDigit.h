@@ -132,9 +132,8 @@ void PixelDigit::draw(int x, int y, short digital, LedMatrix* matrix, CRGB color
             uint8_t ym = n>3 ? y+b*2 : y+b*2+1;
             byte r = bitRead(bd, n);
             if (r == 1) {
+                color = color == NULL ? CRGB::White - matrix->getDataXY(xm, ym) : color;
                 matrix->setDataXY(xm, ym, color);
-            // } else {
-            //     matrix[p] = CRGB::Black;
             }
         }
     }
