@@ -8,6 +8,7 @@
 #include <MatrixClock.h>
 #include <MatrixTemperature.h>
 #include <effects/Rain.h>
+#include <effects/Sky.h>
 
 #include <WiFi.h>
 #include <WiFiUdp.h>
@@ -31,7 +32,9 @@ LedMatrix matrix;
 MatrixEnabledComponent components[3];
 MatrixClock matrixClock(0, 1);
 MatrixTemperature matrixTemterature(0, 9);
+
 RainEffect rainEffect;
+SkyEffect skyEffect;
 
 unsigned long lastUpdateTime = 0;
 
@@ -116,7 +119,7 @@ void setup() {
 
   MatrixEnabledComponent rain_mec;
   rain_mec.enable = true;
-  rain_mec.component = &rainEffect;
+  rain_mec.component = &skyEffect; //rainEffect;
 
   components[0] = rain_mec;
   components[1] = c1;
@@ -126,9 +129,9 @@ void setup() {
 }
 
 void loop() {
-  //rainbow();
-  updateTime();
-  updateWeather();
-  show();
-  delay(100);
+  EVERY_N_MILLIS(100) {
+    show();
+    updateTime();
+    updateWeather();
+  }
 }
