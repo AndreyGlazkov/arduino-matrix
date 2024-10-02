@@ -3,10 +3,10 @@
 #include <MatrixComponent.h>
 
 DEFINE_GRADIENT_PALETTE(multi_gp) {
-    0, 255, 0, 0,
-    84, 0, 255, 0,
-    168, 0, 0, 255,
-    255, 255, 0, 0
+    0, 50, 0, 0,
+    84, 0, 50, 0,
+    168, 0, 0, 50,
+    255, 50, 0, 0
 };
 
 class MultiColorEffect : public MatrixComponent {
@@ -18,5 +18,5 @@ class MultiColorEffect : public MatrixComponent {
 };
 
 void MultiColorEffect::draw(LedMatrix* matrix) {
-    matrix->fillColor(ColorFromPalette(palette, colorIndex));
+    matrix->fillColor(ColorFromPalette(palette, colorIndex++));
 };

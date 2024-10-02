@@ -112,16 +112,17 @@ void setup() {
   matrixClock.setTime(00, 00);
 
   MatrixEnabledComponent c1;
-  c1.enable = true;
+  c1.enable = false;
   c1.component = &matrixClock;
 
   MatrixEnabledComponent c2;
-  c2.enable = true;
+  c2.enable = false;
   c2.component = &matrixTemterature;
 
   MatrixEnabledComponent rain_mec;
   rain_mec.enable = true;
-  rain_mec.component = &multiColorEffect; //skyEffect; //rainEffect;
+//  rain_mec.component = &multiColorEffect; //skyEffect; //rainEffect;
+  rain_mec.component = &skyEffect; //rainEffect;
 
   components[0] = rain_mec;
   components[1] = c1;
