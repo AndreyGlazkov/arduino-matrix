@@ -134,8 +134,9 @@ void PixelDigit::draw(int x, int y, short digital, LedMatrix* matrix, CRGB color
             if (r == 1) {
                 if (color == NULL) {
                     CHSV hsv = rgb2hsv_approximate(matrix->getDataXY(xm, ym));
-                    hsv.hue = hsv.hue + 127;
-                    hsv.sat = hsv.sat + 127;
+                    hsv.hue = hsv.hue > 127 ? 255 - hsv.hue : hsv.hue + 127;
+                    hsv.sat = 255;
+                    hsv.val = 192;
                     color = hsv;
                 }
                 matrix->setDataXY(xm, ym, color);
